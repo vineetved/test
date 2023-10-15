@@ -29,9 +29,10 @@ const {
 	DB_HOST,
 	DB_PORT,
 	DB_NAME,
+	DB_CONNECTION_URL,
 } = process.env;
 
-mongoose.connect(`mongodb://127.0.0.1:27017/social_network_db`, {
+mongoose.connect(DB_CONNECTION_URL, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true
 })
