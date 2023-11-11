@@ -1,10 +1,15 @@
 const Topic = require("./../models/topic")
 const Question = require("./../models/question")
 const User = require("./../models/user")
+const Topiccode = require("./../models/topiccode")
 const multer = require("multer")
 const path = require("path")
 const validator = require("express-validator")
-
+const handlebars = require('handlebars')
+const dropdownOptions = ['Option 1', 'Option 2', 'Option 3']
+// handlebars.registerHelper('splitCommaSeparated', function (input) {
+//     return input.split(',').map(item => item.trim());
+// });
 //photo upload etup
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
@@ -188,25 +193,26 @@ exports.handleCreateQuestion = async (req, res, next) => {
 	try {
 		const topicId = req.params.id
 		const topic = await Topic.findById(topicId)
-
+		console.log('Request '+req);
 		if (topic) {
 			
 
 			if (!errors.isEmpty()) {
 				input.errors = errors.array()
 			} else {
-				const { question } = req.body
+				const { question,video,quetype,examtype,correctanswer,difficultylevel,topiccode } = req.body
 				const connectedUser = req.user
 				const newQuestion = await Question.create({
 					content: question,
 					user: connectedUser._id,
 					imageName: req.file ? req.file.filename : "default-topic-image.png",
 					topic: topicId,
-					video:video,
+					video:video ?? "no-video",
 					quetype: quetype,
 					examtype:examtype,
 					correctanswer: correctanswer,
 					difficultylevel:difficultylevel,
+					topiccode:topiccode,
 				})
 
 				//add this question to topic's questions as well as user's questions
@@ -253,11 +259,13 @@ exports.getAskQuestionPage = async (req, res, next) => {
 		title: "Ask A Question",
 		connectedUser: req.user
 	}
-
+	const topicCode = await Topiccode.find({}, (err, topiccodes) => { });
+	
 	try {
 		const topic = await Topic.findById(req.params.id)
 		if (topic) {
-			input.topic = topic
+			input.topic = topic;
+			input.optionp = topicCode;
 		}
 		res.render("ask-question", input)
 	} catch (error) {

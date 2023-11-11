@@ -1,4 +1,8 @@
 <script src="/js/tinymce/tinymce.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
 <script>
     tinymce.init({
         selector: '#question',
@@ -9,98 +13,132 @@
         <div class="col-md-10 mx-auto" style="margin-top: 50px;">
 
             {{#if topic}}
-                <form action="/topics/{{topic._id}}/question" method="POST" enctype="multipart/form-data" class="form-border">
-                    <h3 class="text-center"><a href="/topics/{{topic._id}}" class="text-capitalize text-primary text-decoration-none"> {{topic.name}} </a> </h3>
+            <form action="/topics/{{topic._id}}/question" method="POST" enctype="multipart/form-data"
+                class="form-border">
+                <h3 class="text-center"><a href="/topics/{{topic._id}}"
+                        class="text-capitalize text-primary text-decoration-none"> {{topic.name}} </a> </h3>
 
-                    {{#if successMessage}}
-                        <div class="alert alert-success text-center">
-                            {{successMessage}}
-                        </div>
-                    {{/if}}
-
-
-                    {{#if errors}}
-                        {{#each errors}}
-                            <div class="alert alert-danger text-center">
-                                {{this.msg}}
-                            </div>
-                        {{/each}}
-                    {{/if}}
+                {{#if successMessage}}
+                <div class="alert alert-success text-center">
+                    {{successMessage}}
+                </div>
+                {{/if}}
 
 
+                {{#if errors}}
+                {{#each errors}}
+                <div class="alert alert-danger text-center">
+                    {{this.msg}}
+                </div>
+                {{/each}}
+                {{/if}}
 
-    
-                    <div class="form-group mb-4">
-                        <label for="descritpion">Your question</label>
-                        <textarea class="form-control" name="question" id="question" placeholder="question" rows="12"></textarea>
-                    </div>
-                    
-	           <div class="form-group mb-4">
+
+
+
+                <div class="form-group mb-4">
+                    <label for="descritpion">Your question</label>
+                    <textarea class="form-control" name="question" id="question" placeholder="question"
+                        rows="12"></textarea>
+                </div>
+
+                <div class="form-group mb-4">
                     <label for="descritpion">Video solution Link</label>
-                    <input type="text" name="video" class="form-control" id="concept" required>
-                    
+                    <input type="text" name="video" class="form-control" id="concept">
+
                 </div>
                 <div class='form-field'>
-    <label for='sizeFilter'>Question Type</label>
-    <select id='sizeFilter' name="quetype" class='form-control'>
-      <option>--Select--</option>
-    <option value="1">Single</option>
-    <option value="2">Multiple</option>
-    <option value="3">Subjective</option>
-    </select>
-  </div>
+                    <label for='sizeFilter'>Question Type</label>
+                    <select id='sizeFilter' name="quetype" class='form-control'>
+                        <option>--Select--</option>
+                        <option value="1">Single</option>
+                        <option value="2">Multiple</option>
+                        <option value="3">Subjective</option>
+                    </select>
+                </div>
+                <div class='form-field'>
+                    <label for='sizeFilter'>Topic Codes</label>
+                    <select id="searchableSelect" name="topiccode" class='form-control'>
 
-  <div class='form-field'>
-    <label for='sizeFilter'>Correct Answer</label>
-    <select id='sizeFilter' name="correctanswer" class='form-control'>
-      <option>--Select--</option>
-      <option value="1">A</option>
-    <option value="2">B</option>
-    <option value="3">C</option>
-    <option value="4">D</option>
-    <option value="5">E</option>
-    </select>
-  </div>
-<div class='form-field'>
-    <label for='sizeFilter'>Exam Type</label>
-    <select id='sizeFilter' name="examtype" class='form-control'>
-      <option>--Select--</option>
-     <option value="1">IIT</option>
-    <option value="2">NEET</option>
-    <option value="3">JSO</option>
-    </select>
-  </div>
+                        <option value="">--SELECT--</option>
+                        {{#each optionp}}
+                        <option value="{{this.PHY110101}}">{{this.PHY110101}}</option>
+                        {{/each}}
+                    </select>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+                </div>
+                <div class='form-field'>
+                    <label for='sizeFilter'>Correct Answer</label>
+                    <select id='sizeFilter' name="correctanswer" class='form-control'>
+                        <option>--Select--</option>
+                        <option value="1">A</option>
+                        <option value="2">B</option>
+                        <option value="3">C</option>
+                        <option value="4">D</option>
+                        <option value="5">E</option>
+                    </select>
+                </div>
+                <div class='form-field'>
+                    <label for='sizeFilter'>Exam Type</label>
+                    <select id='sizeFilter' name="examtype" class='form-control'>
+                        <option>--Select--</option>
+                        <option value="1">IIT</option>
+                        <option value="2">NEET</option>
+                        <option value="3">JSO</option>
+                    </select>
+                </div>
 
-  <div class='form-field'>
-    <label for='sizeFilter'>Difficulty Level</label>
-    <select id='sizeFilter' name="difficultylevel" class='form-control'>
-     <option>--Select--</option>
-     <option value="1">Level 1</option>
-    <option value="2">Level 2</option>
-    <option value="3">Level 3</option>
-    </select>
-  </div><br>
- <div class="custom-file mb-4 form-group">
- <label class="custom-file-label" for='sizeFilter'>Question Image</label>
+                <div class='form-field'>
+                    <label for='sizeFilter'>Difficulty Level</label>
+                    <select id='sizeFilter' name="difficultylevel" class='form-control'>
+                        <option>--Select--</option>
+                        <option value="1">Level 1</option>
+                        <option value="2">Level 2</option>
+                        <option value="3">Level 3</option>
+                    </select>
+                </div><br>
+                <div class="custom-file mb-4 form-group">
+                    <label class="custom-file-label" for='sizeFilter'>Question Image</label>
                     <input type="file" name="image" class="custom-file-input" id="validatedCustomFile" required>
                     <label class="custom-file-label" for="validatedCustomFile">choose the question's picture</label>
                     {{!-- <div class="invalid-feedback">Example invalid custom file feedback</div> --}}
                 </div>
-                    <button class="btn btn-block text-capitalize" 
-                        style="background-color: #324f6c;
+                <button class="btn btn-block text-capitalize" style="background-color: #324f6c;
                         color: white;
                         font-weight: 300;
-                        font-size: larger;"
-                    >
-                        ask
-                    </button>
+                        font-size: larger;">
+                    ask
+                </button>
 
-                </form>
+            </form>
             {{else}}
-                <div class="alert alert-warning">
-                    <h1 class="text-capitalize text-center">topic does not exist!</h1>
-                </div>
+            <div class="alert alert-warning">
+                <h1 class="text-capitalize text-center">topic does not exist!</h1>
+            </div>
             {{/if}}
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        // Initialize the select2 plugin
+        $('#searchableSelect').select2();
+
+        // Handle the search input
+        //$('#searchInput').on('input', function () {
+        //  const searchTerm = $(this).val();
+        //$('#searchableSelect').val(null).trigger('change');
+        //$('#searchableSelect option').each(function () {
+        //  if ($(this).text().toLowerCase().includes(searchTerm.toLowerCase())) {
+        //    $(this).show();
+        //} else {
+        //  $(this).hide();
+        // }
+        // });
+        //});
+    });
+
+
+</script>
