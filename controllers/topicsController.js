@@ -6,6 +6,8 @@ const multer = require("multer")
 const path = require("path")
 const validator = require("express-validator")
 const handlebars = require('handlebars')
+const express = require('express')
+const exphbs = require('express-handlebars')
 const dropdownOptions = ['Option 1', 'Option 2', 'Option 3']
 // handlebars.registerHelper('splitCommaSeparated', function (input) {
 //     return input.split(',').map(item => item.trim());

@@ -11,6 +11,10 @@ const questionSchema = mongoose.Schema({
 	},
 	video: {
 		type: String,
+		required: false
+	},
+	topiccode: {
+		type: String,
 		required: true
 	},
 	correctanswer: {
